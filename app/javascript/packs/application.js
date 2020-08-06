@@ -18,4 +18,4 @@ import './src/application.scss'
 // const imagePath = (name) => images(name, true)
 
 import "../custom";
-import "@fortawesome/fontawesome-free/js/all";
+// import "@fortawesome/fontawesome-free/js/all";

@@ -23,8 +23,6 @@ class AcclaimService
 
   def retrieve_issued_badges(data)
     connection = base_connection
-    puts "data"
-    puts data
     connection.get('badges') do |req|
       req.body = data.to_json
     end
