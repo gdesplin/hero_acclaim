@@ -1,0 +1,77 @@
+<div class="row my-5">
+  <div class="col-md-6">
+    <%= image_tag "#{@hero['thumbnail']['path']}.#{@hero['thumbnail']['extension']}", class: "img-fluid" %>
+  </div>
+  <div class="col-md-6">
+
+    <h1><%= @hero["name"] %></h1>
+    <p><%= @hero["description"] %></p>
+    <% if @hero["issued_badges"].present? %>
+      <div class="row">
+        <div class="col-12">
+          <h5>Earned Badges</h5>
+        </div>
+        <% @hero["issued_badges"].each do |badge| %>
+          <div class="col-md-4">
+            <div class="card w-100 d-inline-block">
+              <%= image_tag badge["badge_template"]['image_url'], class: "card-img-top" %>
+              <div class="card-body">
+                <h5 class="card-title"><%= badge["badge_template"]["name"] %></h5>
+              </div>
+              <div class="card-header">
+                Skills
+              </div>
+              <ul class="list-group list-group-flush">
+                <% badge["badge_template"]["skills"].each do |skill| %>
+                  <li class="list-group-item"><%= skill %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+   
+  </div>
+  <div class="col-md-6">
+    <h5 class="mt-3">Events</h5>
+    <ul class="list-group">
+      <% @hero["events"]["items"].each do |event| %>
+        <li class="list-group-item">
+          <%= link_to event["name"], event["resourceURI"] %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <h2>Available Badges</h2>
+  </div>
+  <% @hero["available_badges"].each do |badge| %>
+    <div class="col-md-3 my-2">
+      <div class="card w-100">
+        <%= image_tag badge['image_url'], class: "card-img-top" %>
+        <div class="card-body">
+          <h5 class="card-title"><%= badge["name"] %></h5>
+        </div>
+        <div class="card-header">
+          Skills
+        </div>
+        <ul class="list-group list-group-flush">
+          <% badge["skills"].each do |skill| %>
+            <li class="list-group-item"><%= skill %></li>
+          <% end %>
+        </ul>
+        <div class="card-footer">
+          <%= form_with url: :acclaims do |f| %>
+            <%= f.hidden_field :hero, value: @hero.to_json %>
+            <%= f.hidden_field :badge_template_id, value: badge["id"] %>
+            <%= f.submit "Issue Badge", class: "btn btn-danger" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

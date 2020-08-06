@@ -1,4 +1,3 @@
-
 class AcclaimService
   require 'faraday'
   def base_url
@@ -12,23 +11,23 @@ class AcclaimService
     end
   end
 
-  def get_badge_templates
+  def retrieve_badge_templates
     connection = base_connection
-    response = connection.get('badge_templates')
-    response
+    connection.get('badge_templates')
   end
 
-  def get_badge_template(template_id)
+  def retrieve_badge_template(template_id)
     connection = base_connection
     connection.get("badge_templates/#{template_id}")
   end
 
-  def get_issued_badges(data)
+  def retrieve_issued_badges(data)
     connection = base_connection
+    puts "data"
+    puts data
     connection.get('badges') do |req|
       req.body = data.to_json
     end
-
   end
 
   def issue_badge(data)

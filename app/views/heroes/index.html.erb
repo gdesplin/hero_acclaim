@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col">
+    <h1>Heroes</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <%= form_with scope: :search, url: :heroes, method: :get do |f| %>
+      <%= f.hidden_field :offset, value: 0 %>
+      <%= f.hidden_field :limit, value: 9 %>
+      <%= f.label :nameStartsWith, "Search Names" %>
+      <%= f.text_field :nameStartsWith %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <% if @heroes_data['data']['results'].blank? %>
+    <div class="alert-warning">The search did not return any results</div>
+  <% else %>
+    <% if params[:search] && params[:search][:nameStartsWith].present? %>
+    <div class="col-12">
+      <div class="alert-info p-2">"<%= params[:search][:nameStartsWith] %>"</div>
+    </div>
+    <% end %>
+    
+    <% @heroes_data['data']['results'].each do |hero| %>
+      <div class="col-md-4 my-2">
+        <div class="card w-100">
+          <%= image_tag "#{hero['thumbnail']['path']}.#{hero['thumbnail']['extension']}", class: "card-img-top" %>
+          <div class="card-body">
+            <h5 class="card-title"><%= hero["name"] %></h5>
+            <p class="card-text"><%= hero["description"] %></p>
+            <a href="/heroes/<%= hero["id"] %>">Read more</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+<div class="row my-4">
+  <div class="col">
+    <%= link_to "Next Page", controller: :heroes, search: { offset: @heroes_data["data"]["offset"].to_i + 9, limit: 9, nameStartsWith: params&.[](:search)&.[](:nameStartsWith) }, class: "btn btn-primary" %>
+    -
+    <%= link_to "Previous Page", controller: :heroes, search: { offset: @heroes_data["data"]["offset"].to_i - 9, limit: 9, nameStartsWith: params&.[](:search)&.[](:nameStartsWith) }, class: "btn btn-primary" %>
+  </div>
+</div>
+
